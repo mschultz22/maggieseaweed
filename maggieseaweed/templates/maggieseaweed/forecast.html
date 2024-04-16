@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+
+    <!-- Title -->
+    <title>maggieseaweed</title>
+
+</head>
+
+<body>
+
+
+    <div class="container-fluid text-center mt-5">
+        <h1>welcome to maggieseaweed!</h1>
+    </div>
+
+    <div class="container px-1 py-5 my-5 h-100">
+
+        <div class="row d-flex justify-content-center align-items-center h-100" style="color: #282828;">
+            <div class="col-md-9 col-lg-7 col-xl-5">
+                <div class="card mb-4 gradient-custom" style="border-radius: 25px;">
+                    <div class="card-body p-4">
+
+                        <div id="demo1" data-mdb-carousel-init class="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ul class="carousel-indicators mb-0">
+                                <li data-target="#demo1" data-slide-to="0" class="active"></li>
+                                <li data-target="#demo1" data-slide-to="1"></li>
+                                <li data-target="#demo1" data-slide-to="2"></li>
+                            </ul>
+                            <!-- Carousel inner -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <div class="d-flex justify-content-between mb-2 pb-2">
+                                        <div>
+                                            <h6 class="display-6"><strong>You should surf at </strong></h6>
+                                            <h4 class="display-4"><strong>{{ time }}</strong></h4>
+                                            <h5 class="display-5"><strong>{{ date }}</strong></h5>
+                                            <p class="text-muted">{{ location_name }}</p>
+                                            <h5 class="display-5"><strong> 💧 {{ water_temperature }}°F
+                                            🌍 {{ air_temperature }}°F</strong></h5>
+
+                                            <h5 class="display-5"><strong> 🌊 {{ wave_height }} ft
+                                            🌬️  {{ wind_speed_10m }}mph {{ wind_direction_10m }}</strong></h5>
+                                        </div>
+                                        <div>
+                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-weather/ilu3.webp"
+                                                width="150px">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card mb-4" style="border-radius: 25px;">
+                    <div class="card-body p-4">
+
+                        <div id="demo2" data-mdb-carousel-init class="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ul class="carousel-indicators mb-0">
+                                <li data-target="#demo2" data-slide-to="0"></li>
+                                <li data-target="#demo2" data-slide-to="1" class="active"></li>
+                                <li data-target="#demo2" data-slide-to="2"></li>
+                            </ul>
+                            <!-- Carousel inner -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <div class="d-flex justify-content-between text-center pb-2 pt-2">
+                                        {% for hour in around_best_time %}
+                                            <div class="flex-column" {% if hour.best == 1 %} style="font-weight: bold; font-size: 1.2rem;" {% endif %}>
+                                                <p class="small"><strong>{{ hour.temperature_2m }}°F</strong></p>
+                                                <p class="mb-0"><strong>{{ hour.hour }}</strong></p>
+                                                <p class="mb-3 text-muted" style="font-size: .65rem;">{{ hour.am_pm }}</p>
+                                                <p class="small"><strong>{{ hour.surfability_score }} </strong></p>
+                                            </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card" style="border-radius: 25px;">
+                    <div class="card-body p-4">
+                        <div id="map" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        $(document).ready(function () {
+            var latitude = {{ latitude }};
+        var longitude = {{ longitude }};
+        var location_name = "{{ location_name }}";
+
+        var map = L.map('map').setView([latitude, longitude], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker([latitude, longitude]).addTo(map)
+            .bindPopup('<b>Surfing Location: </b><br>' + location_name).openPopup();
+        });
+    </script>
+</body>
+
+
+</html>
