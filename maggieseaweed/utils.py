@@ -31,7 +31,6 @@ def fetch_open_meteo_data(latitude, longitude, forecast_days):
     }
     responses = openmeteo.weather_api(url, params=params)
 
-    # Process first location. Add a for-loop for multiple locations or weather models
     response = responses[0]
 
     hourly = response.Hourly()
@@ -69,8 +68,8 @@ def surfability_score_old(row):
 
 def format_time(timestamp):
     time_str = timestamp.strftime("%I:%M %p")
-    if time_str.startswith('0'):  # Check if the hour starts with zero
-        time_str = time_str[1:]  # Remove the leading zero
+    if time_str.startswith('0'):
+        time_str = time_str[1:]
     return time_str
 
 def surfability_score(row):
@@ -153,8 +152,8 @@ def fetch_wave_data(latitude, longitude, forecast_days):
         params={
             "lat": latitude,
             "lng": longitude,
-            "start": start.to("UTC").timestamp(),  # Convert to UTC timestamp
-            "end": end.to("UTC").timestamp(),  # Convert to UTC timestam
+            "start": start.to("UTC").timestamp(),
+            "end": end.to("UTC").timestamp(),
             "params": ",".join(features),
             "source": "sg",
         },
