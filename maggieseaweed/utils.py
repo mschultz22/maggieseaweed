@@ -7,6 +7,22 @@ import numpy as np
 import requests
 import arrow
 
+# import geopandas as gpd
+# from shapely.wkt import loads
+# from shapely.geometry import shape, Polygon
+
+
+# import pyarrow.parquet as pq
+# import geopandas as gpd
+# from shapely.wkt import loads
+# from shapely.geometry import shape, Polygon
+# import geopandas as gpd
+# from shapely.ops import nearest_points
+# from shapely.geometry import Point, MultiLineString
+
+
+OCEANS_FP = "/Users/mschultz3/Documents/projects/temporary/sandbox_exposure/untracked/data/ocean_land_boundaries.parquet"
+
 
 def fetch_open_meteo_data(latitude, longitude, forecast_days):
     cache_session = requests_cache.CachedSession(".cache", expire_after=3600)
@@ -23,6 +39,7 @@ def fetch_open_meteo_data(latitude, longitude, forecast_days):
             "wind_direction_10m",
             "uv_index",
             "is_day",
+            "cloud_cover"
         ],
         "temperature_unit": "fahrenheit",
         "wind_speed_unit": "mph",
@@ -52,6 +69,7 @@ def fetch_open_meteo_data(latitude, longitude, forecast_days):
     hourly_data["wind_direction_10m"] = hourly.Variables(2).ValuesAsNumpy()
     hourly_data["uv_index"] = hourly.Variables(3).ValuesAsNumpy()
     hourly_data["is_day"] = hourly.Variables(4).ValuesAsNumpy()
+    hourly_data["cloud_cover"] = hourly.Variables(5).ValuesAsNumpy()
 
     hourly_dataframe = pd.DataFrame(data=hourly_data)
     return hourly_dataframe
@@ -189,3 +207,18 @@ def join_feature_df(weather, wave):
     merged_df = merged_df.drop(columns=["time", "time_utc"])
 
     return merged_df
+
+def get_closest_beach(lat, lon, data_path = OCEANS_FP):
+    input_point = Point(lat, lon)
+    ocean_boundaries = pq.read_table(data_path).to_pandas()
+    ocean_boundaries['geojson'] = (
+        ocean_boundaries['geojson']
+        .apply(lambda x: shape(eval(x)))
+    )
+    ocean_boundaries = gpd.GeoDataFrame(ocean_boundaries, geometry='geojson', crs="EPSG:4326")
+
+    ocean_boundaries['distance'] = ocean_boundaries.geometry.distance(input_point)
+    closest_multiline = ocean_boundaries.loc[ocean_boundaries['distance'].idxmin()]
+    boundary = closest_multiline.geojson
+    closest_point_on_boundary = boundary.interpolate(boundary.project(input_point))
+    return closest_point_on_boundary
