@@ -85,6 +85,7 @@ def display_forecast(request, place_name, latitude, longitude, forecast_days):
         "uv_index": str(round(best_time_to_surf.get("uv_index"))),
         "is_day": str(best_time_to_surf.get("is_day")),
         "surfability_score": str(round(best_time_to_surf.get("surfability_score"))),
+        "cloud_cover": str(round(best_time_to_surf.get("cloud_cover"))),
         "water_temp": str(best_time_to_surf.get("waterTemperature")),
         "latitude": latitude,
         "longitude": longitude,
