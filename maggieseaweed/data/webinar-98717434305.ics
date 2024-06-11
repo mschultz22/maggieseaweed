@@ -1,0 +1,68 @@
+BEGIN:VCALENDAR
+PRODID:-//zoom.us//iCalendar Event//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+CLASS:PUBLIC
+BEGIN:VTIMEZONE
+TZID:America/New_York
+LAST-MODIFIED:20240422T053451Z
+TZURL:https://www.tzurl.org/zoneinfo-outlook/America/New_York
+X-LIC-LOCATION:America/New_York
+BEGIN:DAYLIGHT
+TZNAME:EDT
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZNAME:EST
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTAMP:20240529T201429Z
+DTSTART;TZID=America/New_York:20240604T160000
+DTEND;TZID=America/New_York:20240604T170000
+SUMMARY:Climate Justice and Mass Incarceration
+UID:20240529T201429Z-98717434305@fe80:0:0:0:cf0:f9ff:fefe:ad7bens5
+TZID:America/New_York
+DESCRIPTION:Join from a PC\, Mac\, iPad\, iPhone or Android device:\n    
+ Please click this URL to join. https://harvard.zoom.us/w/98717434305?tk=
+ zrTEYmKGyW3oNoYBiZa-iTArGrMkQs1UtDW9-UwJ7sc.DQYAAAAW_ASBwRZsV2xxM0xOZFFN
+ cTF0eFczelF0OGh3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&pwd=U1lVZE1PZjQ2K
+ 3ZtMEcvMHhrTFk3dz09&uuid=WN_OPXHVNbpR_Ka8pR2pScuzA\n    Passcode: 02138\
+ n	Description: People who are incarcerated are disproportionately vulner
+ able to climate hazards\, and this population is often ignored and/or ex
+ cluded from conversations about climate change. Carceral institutions an
+ d public policy are largely unprepared for the environmental threats tha
+ t persist as a result of our warming planet. Using the recent report\, H
+ idden Hazards: The Impacts of Climate Change on Incarcerated People in C
+ alifornia State Prisons\, as a starting point for discussion\, speakers 
+ will explore ways to address the potentially deadly challenges for those
+  who are incarcerated\, as well as areas for further study and action.\n
+ \nOr One tap mobile:\n    +16694449171\,\,98717434305#\,\,\,\,*02138# US
+ \n    +16699006833\,\,98717434305#\,\,\,\,*02138# US (San Jose)\n\nOr jo
+ in by phone:\n    Dial(for higher quality\, dial a number based on your 
+ current location):\n        US: +1 669 444 9171  or +1 669 900 6833  or 
+ +1 689 278 1000  or +1 719 359 4580  or +1 929 436 2866  or +1 253 205 0
+ 468  or +1 253 215 8782  or +1 301 715 8592  or +1 305 224 1968  or +1 3
+ 09 205 3325  or +1 312 626 6799  or +1 346 248 7799  or +1 360 209 5623 
+  or +1 386 347 5053  or +1 507 473 4847  or +1 564 217 2000  or +1 646 9
+ 31 3860 \n    Webinar ID: 987 1743 4305\n    Passcode: 02138\n    Intern
+ ational numbers available: https://harvard.zoom.us/u/aNgi7XWmz\n\n
+LOCATION:https://harvard.zoom.us/w/98717434305?tk=zrTEYmKGyW3oNoYBiZa-iTA
+ rGrMkQs1UtDW9-UwJ7sc.DQYAAAAW_ASBwRZsV2xxM0xOZFFNcTF0eFczelF0OGh3AAAAAAA
+ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&pwd=U1lVZE1PZjQ2K3ZtMEcvMHhrTFk3dz09&uui
+ d=WN_OPXHVNbpR_Ka8pR2pScuzA
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+END:VEVENT
+END:VCALENDAR
