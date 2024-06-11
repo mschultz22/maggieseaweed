@@ -6,19 +6,14 @@ from retry_requests import retry
 import numpy as np
 import requests
 import arrow
+from shapely.geometry import Point
 
-# import geopandas as gpd
-# from shapely.wkt import loads
-# from shapely.geometry import shape, Polygon
+import geopandas as gpd
+from shapely.wkt import loads
+from shapely.geometry import shape, Polygon
 
+import pyarrow.parquet as pq
 
-# import pyarrow.parquet as pq
-# import geopandas as gpd
-# from shapely.wkt import loads
-# from shapely.geometry import shape, Polygon
-# import geopandas as gpd
-# from shapely.ops import nearest_points
-# from shapely.geometry import Point, MultiLineString
 
 
 OCEANS_FP = "/Users/mschultz3/Documents/projects/temporary/sandbox_exposure/untracked/data/ocean_land_boundaries.parquet"
@@ -222,3 +217,28 @@ def get_closest_beach(lat, lon, data_path = OCEANS_FP):
     boundary = closest_multiline.geojson
     closest_point_on_boundary = boundary.interpolate(boundary.project(input_point))
     return closest_point_on_boundary
+
+def get_closest_surf_spot(lat, lon):
+    input_point = Point(lat, lon)
+
+    surf_spots = pd.read_csv('/Users/mschultz3/Documents/projects/ml-for-production/maggieseaweed/maggieseaweed/data/surfspots.csv')
+    surf_spots = gpd.GeoDataFrame(
+        surf_spots,
+        geometry=gpd.points_from_xy(surf_spots.latitude, surf_spots.longitude),
+        crs="EPSG:4326"
+    )
+    surf_spots['distance'] = surf_spots.geometry.distance(input_point)
+
+    closest_spot = surf_spots.loc[surf_spots['distance'].idxmin()]
+
+    surf_spot_data = {
+        'latitude': closest_spot['latitude'],
+        'longitude': closest_spot['longitude'],
+        'spot': closest_spot['spot'],
+        'wave_direction': closest_spot['wave_direction'],
+        'wave_type': closest_spot['wave_type'],
+        'crowd_level': closest_spot['crowd_level'],
+        'distance': round(closest_spot['distance'] * 69.047, 1)
+    }
+
+    return surf_spot_data

@@ -20,6 +20,12 @@
     <!-- Leaflet JavaScript -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
+    <!-- <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.3/components/charts/chart-1/assets/css/chart-1.css">
+    <!-- ApexCharts JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
 
     <!-- Title -->
     <title>maggieseaweed</title>
@@ -55,17 +61,50 @@
                                             <h6 class="display-6"><strong>You should surf at </strong></h6>
                                             <h4 class="display-4"><strong>{{ time }}</strong></h4>
                                             <h5 class="display-5"><strong>{{ date }}</strong></h5>
-                                            <p class="text-muted">{{ location_name }}</p>
-                                            <h5 class="display-5"><strong> 💧 {{ water_temperature }}°F
-                                            🌍 {{ air_temperature }}°F</strong></h5>
+                                            <h6 class="text-muted">@ {{ location_name }}</h6>
+                                            <p class="text-muted"> {{ distance_to_input }} miles from {{ input_location_name }}</p>
+                                            <h5 class="display-5"><strong>
+                                                    🌡️ {{ air_temperature }}°F
+                                                    💨 {{ wind_speed_10m }}mph {{ wind_direction_10m }}</strong></h5>
 
-                                            <h5 class="display-5"><strong> 🌊 {{ wave_height }} ft
-                                            🌬️  {{ wind_speed_10m }}mph {{ wind_direction_10m }}</strong></h5>
+                                            <h5 class="display-5"><strong>
+                                                💧 {{ water_temperature }}°F
+                                                🌊 {{ wave_height }} ft
+                                                </strong></h5>
                                         </div>
-                                        <div>
-                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-weather/ilu3.webp"
-                                                width="150px">
-                                        </div>
+
+
+                                        <div id="weatherIcon"></div>
+                                        <script>
+                                            var cloud_cover = {{ cloud_cover }};
+
+                                            // Get the weatherIcon div
+                                            var weatherIcon = document.getElementById("weatherIcon");
+
+                                            // Create an icon element based on cloud cover percentage
+                                            var iconElement;
+                                            if (cloud_cover > 75) {
+                                                iconElement = document.createElement("img");
+                                                iconElement.src = "https://www.iconarchive.com/download/i132284/bootstrap/bootstrap/Bootstrap-cloud.1024.png";
+                                                iconElement.width = "150";
+                                            } else if (cloud_cover >= 25 && cloud_cover <= 75) {
+                                                iconElement = document.createElement("img");
+                                                iconElement.src = "https://icons.iconarchive.com/icons/ionic/ionicons/256/partly-sunny-outline-icon.png";
+                                                iconElement.width = "150";
+                                            } else {
+                                                iconElement = document.createElement("img");
+                                                iconElement.src = "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-weather/ilu3.webp";
+                                                iconElement.width = "150";
+                                            }
+                                            // Add additional styling to the icon element
+                                            iconElement.style.color = "black"; // Set icon color to black
+                                            iconElement.style.backgroundColor = "white"; // Set background color to white
+
+
+                                            // Append the icon element to the weatherIcon div
+                                            weatherIcon.appendChild(iconElement);
+                                        </script>
+
                                     </div>
                                 </div>
                             </div>
@@ -73,42 +112,28 @@
 
                     </div>
                 </div>
-
-                <div class="card mb-4" style="border-radius: 25px;">
-                    <div class="card-body p-4">
-
-                        <div id="demo2" data-mdb-carousel-init class="carousel slide" data-ride="carousel">
-                            <!-- Indicators -->
-                            <ul class="carousel-indicators mb-0">
-                                <li data-target="#demo2" data-slide-to="0"></li>
-                                <li data-target="#demo2" data-slide-to="1" class="active"></li>
-                                <li data-target="#demo2" data-slide-to="2"></li>
-                            </ul>
-                            <!-- Carousel inner -->
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <div class="d-flex justify-content-between text-center pb-2 pt-2">
-                                        {% for hour in around_best_time %}
-                                            <div class="flex-column" {% if hour.best == 1 %} style="font-weight: bold; font-size: 1.2rem;" {% endif %}>
-                                                <p class="small"><strong>{{ hour.temperature_2m }}°F</strong></p>
-                                                <p class="mb-0"><strong>{{ hour.hour }}</strong></p>
-                                                <p class="mb-3 text-muted" style="font-size: .65rem;">{{ hour.am_pm }}</p>
-                                                <p class="small"><strong>{{ hour.surfability_score }} </strong></p>
-                                            </div>
-                                        {% endfor %}
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="card" style="border-radius: 25px;">
+                <div class="card mb-4 gradient-custom" style="border-radius: 25px;">
                     <div class="card-body p-4">
                         <div id="map" style="height: 400px;"></div>
                     </div>
                 </div>
+
+<!-- Chart 1 - Bootstrap Brain Component -->
+            <div class="card mb-4 gradient-custom" style="border-radius: 25px;">
+                <div class="card-body p-4">
+              <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
+                <div class="mb-3 mb-sm-0">
+                  <h5 class="card-title widget-card-title">Surfability Forecast</h5>
+                </div>
+              </div>
+              <div id="surfabilityChart" ></div>
+
+            </div>
+        </div>
+
+
+
+
             </div>
 
         </div>
@@ -120,6 +145,67 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var chartData = {{ chart_data_json|safe }};
+
+            var options = {
+                chart: {
+                    type: 'line',
+                    height: 350,
+                    zoom: {
+                        enabled: true,
+                        type: 'x',
+                        autoScaleYaxis: true
+                    },
+                },
+                series: [{
+                    name: 'Surfability Score',
+                    data: chartData
+                }],
+                xaxis: {
+                    type: 'datetime',
+                    labels: {
+                        rotate: -45,
+                        offsetY: 2,
+                        datetimeFormatter: {
+                            year: 'yyyy',
+                            month: 'MMM \'yy',
+                            day: 'dd MMM',
+                            hour: 'HH:mm'
+                        }
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Surfability Score'
+                    }
+                },
+                tooltip: {
+                    x: {
+                        format: 'dd MMM yyyy HH:mm'
+                    },
+                    y: {
+                        formatter: function (value) {
+                            return value.toFixed(2);
+                        }
+                    },
+                    // custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                    //     var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+                    //     return '<div class="arrow_box">' +
+                    //         '<span> 💧 ' + data.water_temperature + '°F</span><br>' +
+                    //         '<span> 🌊 ' + data.wave_height + 'm</span><br>' +
+                    //         '<span> 🌡️ ' + data.air_temperature + '°F</span><br>' +
+                    //         '<span> 💨 ' + data.wind_speed_10m + 'mph '+ data.wind_direction_10m +'</span><br>' +
+                    //         '</div>';
+                    // }
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#surfabilityChart"), options);
+            chart.render();
+        });
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -134,19 +220,40 @@
     <script>
         $(document).ready(function () {
             var latitude = {{ latitude }};
-        var longitude = {{ longitude }};
-        var location_name = "{{ location_name }}";
+            var longitude = {{ longitude }};
+            var location_name = "{{ location_name }}";
+            var wave_direction = "{{ wave_direction }}";
+            var wave_type = "{{ wave_type }}";
+            var crowd_level = "{{ crowd_level }}";
+            var distance_to_input = "{{ distance_to_input }}";
+            var input_location_name = "{{ input_location_name }}";
 
-        var map = L.map('map').setView([latitude, longitude], 13);
+            var map = L.map('map').setView([latitude, longitude], 13);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+            }).addTo(map);
 
-        L.marker([latitude, longitude]).addTo(map)
-            .bindPopup('<b>Surfing Location: </b><br>' + location_name).openPopup();
+            // Add legend
+            var legend = L.control({ position: 'topright' });
+
+            legend.onAdd = function (map) {
+                var div = L.DomUtil.create('div', 'legend');
+                div.innerHTML += '<h3>' + location_name + '</h3>';
+                div.innerHTML += '<p>'+wave_type + ' '+ wave_direction + ' '+crowd_level +'</p>';
+                return div;
+            };
+
+            legend.addTo(map);
+
+
+            L.marker([latitude, longitude]).addTo(map)
+                .bindPopup(distance_to_input + ' from ' + input_location_name).openPopup();
         });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://unpkg.com/bs-brain@2.0.3/components/charts/chart-1/assets/controller/chart-1.js"></script>
 </body>
 
 

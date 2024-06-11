@@ -7,74 +7,12 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
-
-    <!-- jQuery for AJAX requests -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            var accessToken = 'pk.eyJ1IjoibWFnZ2llY3NjaHVsdHoiLCJhIjoiY2x0ZGRiZWpwMDNjbTJsc2R5eHQ4YnMzYiJ9.ALy4ULirb8PPUAFyY-f4uw';
-            $('#place').on('input', function() {
-                var place = $(this).val();
-                if (place.length > 3) {  // Only start searching when the input length is more than 3 characters
-                    $.ajax({
-                        url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURIComponent(place) + '.json',
-                        type: 'GET',
-                        data: {
-                            access_token: accessToken,
-                            autocomplete: true
-                        },
-                        success: function (data) {
-                            $('#search-results').empty();
-                            data.features.forEach(function(feature) {
-                                var name = feature.place_name;
-                                var li = $('<li>')
-                                    .addClass('list-group-item list-group-item-action')
-                                    .text(name)
-                                    .click(function() {
-                                        $('#place').val(name);
-                                        $('#search-results').empty();
-                                        var coordinates = feature.center;
-                                        console.log('Selected coordinates:', coordinates[1], coordinates[0]); // latitude, longitude
-                                    });
-                                $('#search-results').append(li);
-                            });
-                        },
-                        error: function (error) {
-                            console.error('Error fetching location data:', error);
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-    <style>
-        #search-results {
-            position: absolute;
-            z-index: 1000;
-            width: calc(100% - 30px);
-            max-height: 300px;
-            overflow-y: auto;
-            background: white;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-            list-style: none;
-            padding-left: 0;
-        }
-        #search-results li {
-            padding: 10px;
-            cursor: pointer;
-        }
-        #search-results li:hover {
-            background-color: #f8f8f8;
-        }
-    </style>
     <script>
         $(document).ready(function () {
             // Handle form submission
@@ -100,6 +38,7 @@
                         var longitude = result.center[0];
                         var place_name = result.place_name;
 
+                        // Now you can proceed with the form submission
                         window.location.href = "/results/" + place_name + "/" + latitude + "/" + longitude + "/" + forecastDays + "/";
 
                     },
@@ -119,7 +58,6 @@
 </head>
 
 <body>
-
     <div class="container-fluid text-center py-5">
         <img src="{% static 'maggieseaweed/transparent_black_logo.png' %}" alt="msw_logo" class="logo">
         <h1>welcome to my surf app!</h1>
@@ -136,8 +74,13 @@
                             <label for="place">Where are you surfing?</label>
                             <input type="text" class="form-control" id="place" name="place"
                                 aria-describedby="locationHelp" placeholder="Enter location" required>
-                            <div id="search-results" class="search-results"></div>
+                            <small id="locationHelp" class="form-text text-muted">Enter beach, returns exact location (rather than nearest beach).</small>
+                            <mapbox-search-box
+                                access-token="<pk.eyJ1IjoibWFnZ2llY3NjaHVsdHoiLCJhIjoiY2x0ZGRiZWpwMDNjbTJsc2R5eHQ4YnMzYiJ9.ALy4ULirb8PPUAFyY-f4uw>"
+                                proximity="0,0">
+                            </mapbox-search-box>
                         </div>
+
                         <div class="form-group">
                             <label for="forecastDays">Forecast Days</label>
                             <select class="form-control" id="forecastDays" name="forecastDays">

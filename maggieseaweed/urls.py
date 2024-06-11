@@ -12,6 +12,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("home/", views.home, name="home"),
     path("", views.home, name="home"),
+    path("testing", views.testing, name="testing"),
     path("results", views.display_forecast, name="forecast"),
     path(
         "results/<str:place_name>/<str:latitude>/<str:longitude>/<int:forecast_days>/",
