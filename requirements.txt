@@ -33,7 +33,6 @@ Flask==3.0.2
 flatbuffers==23.5.26
 folium==0.14.0
 fonttools==4.51.0
-GDAL==3.6.2
 geopandas==0.14.2
 idna==3.7
 importlib-metadata==7.0.1
