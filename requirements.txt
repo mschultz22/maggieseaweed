@@ -7,6 +7,7 @@ charset-normalizer==3.3.2
 click==8.1.7
 click-plugins==1.1.1
 cligj==0.7.2
+dj-database-url==2.2.0
 Django==5.0.6
 fiona==1.9.6
 flatbuffers==24.3.25
@@ -19,6 +20,7 @@ openmeteo_sdk==1.11.8
 packaging==24.1
 pandas==2.2.2
 platformdirs==4.2.2
+psycopg2-binary==2.9.9
 pyarrow==16.1.0
 pyogrio==0.9.0
 pyproj==3.6.1
@@ -31,6 +33,7 @@ shapely==2.0.4
 six==1.16.0
 sqlparse==0.5.0
 types-python-dateutil==2.9.0.20240316
+typing_extensions==4.12.2
 tzdata==2024.1
 url-normalize==1.4.3
 urllib3==2.2.2
