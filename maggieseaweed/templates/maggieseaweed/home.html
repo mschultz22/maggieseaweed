@@ -21,7 +21,7 @@
     <script>
         $(document).ready(function () {
             var accessToken = 'pk.eyJ1IjoibWFnZ2llY3NjaHVsdHoiLCJhIjoiY2x0ZGRiZWpwMDNjbTJsc2R5eHQ4YnMzYiJ9.ALy4ULirb8PPUAFyY-f4uw';
-            $('#place').on('input', function() {
+            $('#place').on('input', function () {
                 var place = $(this).val();
                 if (place.length > 3) {  // Only start searching when the input length is more than 3 characters
                     $.ajax({
@@ -33,12 +33,12 @@
                         },
                         success: function (data) {
                             $('#search-results').empty();
-                            data.features.forEach(function(feature) {
+                            data.features.forEach(function (feature) {
                                 var name = feature.place_name;
                                 var li = $('<li>')
                                     .addClass('list-group-item list-group-item-action')
                                     .text(name)
-                                    .click(function() {
+                                    .click(function () {
                                         $('#place').val(name);
                                         $('#search-results').empty();
                                         var coordinates = feature.center;
@@ -63,14 +63,16 @@
             max-height: 300px;
             overflow-y: auto;
             background: white;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
             list-style: none;
             padding-left: 0;
         }
+
         #search-results li {
             padding: 10px;
             cursor: pointer;
         }
+
         #search-results li:hover {
             background-color: #f8f8f8;
         }
@@ -121,9 +123,39 @@
 <body>
 
     <div class="container-fluid text-center py-5">
-        <img src="{% static 'maggieseaweed/static/maggieseaweed/transparent_black_logo.png' %}" alt="msw_logo" class="logo">
-        <h1>welcome to my surf app!</h1>
+        <style>
+            .logo {
+                text-align: center;
+                font-family: Arial, sans-serif;
+                margin-top: 50px;
+                line-height: 0.9; /* Adjust this value to control the space between lines */
+            }
+            .logo .m {
+                font-size: 110px;
+            }
+            .logo .s {
+                font-size: 115px;
+                display: inline-block;
+                transform: rotate(90deg);
+            }
+            .logo .w {
+                font-size: 110px;
+            }
+            .logo .line {
+                font-size: 60px;
+                display: block;
+            }
+        </style>
+        <div class="logo">
+            <span class="m">m </span>
+            <span class="s"> s</span>
+            <span class="w">w</span>
+            <span class="line">maggieseaweed</span>
+        </div>
+
     </div>
+    <div class="container-fluid text-center py-5"><h1>welcome to my surf app!</h1></div>
+
 
     <section class="vh-100">
         <div class="container py-5">
