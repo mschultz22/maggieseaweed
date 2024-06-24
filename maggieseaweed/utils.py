@@ -15,8 +15,7 @@ from shapely.geometry import shape, Polygon
 import pyarrow.parquet as pq
 
 
-
-OCEANS_FP = "/Users/mschultz3/Documents/projects/temporary/sandbox_exposure/untracked/data/ocean_land_boundaries.parquet"
+# OCEANS_FP = "/Users/mschultz3/Documents/projects/temporary/sandbox_exposure/untracked/data/ocean_land_boundaries.parquet"
 
 
 def fetch_open_meteo_data(latitude, longitude, forecast_days):
@@ -34,7 +33,7 @@ def fetch_open_meteo_data(latitude, longitude, forecast_days):
             "wind_direction_10m",
             "uv_index",
             "is_day",
-            "cloud_cover"
+            "cloud_cover",
         ],
         "temperature_unit": "fahrenheit",
         "wind_speed_unit": "mph",
@@ -79,11 +78,13 @@ def surfability_score_old(row):
 
     return total_score
 
+
 def format_time(timestamp):
     time_str = timestamp.strftime("%I:%M %p")
-    if time_str.startswith('0'):
+    if time_str.startswith("0"):
         time_str = time_str[1:]
     return time_str
+
 
 def surfability_score(row):
     temperature_score = row["waterTemperature"]  # Higher temperature is better
@@ -100,15 +101,14 @@ def surfability_score(row):
     wind_speed_weight = 0.2
 
     total_score = (
-        temperature_weight * temperature_score +
-        wave_height_weight * wave_height_score +
-        wave_period_weight * wave_period_score +
-        wave_direction_weight * wave_direction_score +
-        wind_speed_weight * wind_speed_score
+        temperature_weight * temperature_score
+        + wave_height_weight * wave_height_score
+        + wave_period_weight * wave_period_score
+        + wave_direction_weight * wave_direction_score
+        + wind_speed_weight * wind_speed_score
     ) * daytime_score
 
     return total_score
-
 
 
 def degrees_to_cardinal(direction_in_degrees):
@@ -150,13 +150,13 @@ def fetch_location_data(place):
 
 
 def celsius_to_fahrenheit(celsius):
-    fahrenheit = celsius * 9/5 + 32
+    fahrenheit = celsius * 9 / 5 + 32
     return fahrenheit
 
 
 def fetch_wave_data(latitude, longitude, forecast_days):
-    start = arrow.now().floor('day')
-    end = arrow.now().shift(days=forecast_days).ceil('day')
+    start = arrow.now().floor("day")
+    end = arrow.now().shift(days=forecast_days).ceil("day")
 
     features = ["waveHeight", "waveDirection", "wavePeriod", "waterTemperature"]
 
@@ -179,17 +179,16 @@ def fetch_wave_data(latitude, longitude, forecast_days):
 
     wave_df = pd.DataFrame(data=json_data["hours"])
 
-
     for column in features:
         wave_df[column] = wave_df[column].apply(
             lambda d: d.get("sg") if isinstance(d, dict) else None
         )
 
-    wave_df['waterTemperature'] = wave_df['waterTemperature'].apply(celsius_to_fahrenheit)
+    wave_df["waterTemperature"] = wave_df["waterTemperature"].apply(
+        celsius_to_fahrenheit
+    )
 
     return wave_df
-
-
 
 
 def join_feature_df(weather, wave):
@@ -203,42 +202,45 @@ def join_feature_df(weather, wave):
 
     return merged_df
 
-def get_closest_beach(lat, lon, data_path = OCEANS_FP):
+
+def get_closest_beach(lat, lon, data_path=OCEANS_FP):
     input_point = Point(lat, lon)
     ocean_boundaries = pq.read_table(data_path).to_pandas()
-    ocean_boundaries['geojson'] = (
-        ocean_boundaries['geojson']
-        .apply(lambda x: shape(eval(x)))
+    ocean_boundaries["geojson"] = ocean_boundaries["geojson"].apply(
+        lambda x: shape(eval(x))
     )
-    ocean_boundaries = gpd.GeoDataFrame(ocean_boundaries, geometry='geojson', crs="EPSG:4326")
+    ocean_boundaries = gpd.GeoDataFrame(
+        ocean_boundaries, geometry="geojson", crs="EPSG:4326"
+    )
 
-    ocean_boundaries['distance'] = ocean_boundaries.geometry.distance(input_point)
-    closest_multiline = ocean_boundaries.loc[ocean_boundaries['distance'].idxmin()]
+    ocean_boundaries["distance"] = ocean_boundaries.geometry.distance(input_point)
+    closest_multiline = ocean_boundaries.loc[ocean_boundaries["distance"].idxmin()]
     boundary = closest_multiline.geojson
     closest_point_on_boundary = boundary.interpolate(boundary.project(input_point))
     return closest_point_on_boundary
 
+
 def get_closest_surf_spot(lat, lon):
     input_point = Point(lat, lon)
 
-    surf_spots = pd.read_csv('/Users/mschultz3/Documents/projects/ml-for-production/maggieseaweed/maggieseaweed/data/surfspots.csv')
+    # surf_spots = pd.read_csv('/Users/mschultz3/Documents/projects/ml-for-production/maggieseaweed/maggieseaweed/data/surfspots.csv')
     surf_spots = gpd.GeoDataFrame(
         surf_spots,
         geometry=gpd.points_from_xy(surf_spots.latitude, surf_spots.longitude),
-        crs="EPSG:4326"
+        crs="EPSG:4326",
     )
-    surf_spots['distance'] = surf_spots.geometry.distance(input_point)
+    surf_spots["distance"] = surf_spots.geometry.distance(input_point)
 
-    closest_spot = surf_spots.loc[surf_spots['distance'].idxmin()]
+    closest_spot = surf_spots.loc[surf_spots["distance"].idxmin()]
 
     surf_spot_data = {
-        'latitude': closest_spot['latitude'],
-        'longitude': closest_spot['longitude'],
-        'spot': closest_spot['spot'],
-        'wave_direction': closest_spot['wave_direction'],
-        'wave_type': closest_spot['wave_type'],
-        'crowd_level': closest_spot['crowd_level'],
-        'distance': round(closest_spot['distance'] * 69.047, 1)
+        "latitude": closest_spot["latitude"],
+        "longitude": closest_spot["longitude"],
+        "spot": closest_spot["spot"],
+        "wave_direction": closest_spot["wave_direction"],
+        "wave_type": closest_spot["wave_type"],
+        "crowd_level": closest_spot["crowd_level"],
+        "distance": round(closest_spot["distance"] * 69.047, 1),
     }
 
     return surf_spot_data
