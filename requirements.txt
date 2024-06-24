@@ -11,6 +11,7 @@ Django==5.0.6
 fiona==1.9.6
 flatbuffers==24.3.25
 geopandas==1.0.0
+gunicorn==22.0.0
 idna==3.7
 numpy==2.0.0
 openmeteo_requests==1.2.0
