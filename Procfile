@@ -1,1 +1,1 @@
-web: gunicorn maggie_seaweed.wsgi
+web: gunicorn maggieseaweed.wsgi
