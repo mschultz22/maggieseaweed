@@ -1,1 +1,1 @@
-web: python manage.py migrate && python manage.py collectstatic --no-input && gunicorn maggieseaweed:app --preload
+web: python manage.py migrate && python manage.py collectstatic --no-input && gunicorn maggieseaweed.wsgi:application --preload
