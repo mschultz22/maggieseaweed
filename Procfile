@@ -1,1 +1,1 @@
-web: gunicorn maggieseaweed.wsgi --log-file -
+web:gunicorn wsgi:app
