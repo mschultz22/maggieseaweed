@@ -15,7 +15,7 @@ from shapely.geometry import shape, Polygon
 import pyarrow.parquet as pq
 
 
-# OCEANS_FP = "/Users/mschultz3/Documents/projects/temporary/sandbox_exposure/untracked/data/ocean_land_boundaries.parquet"
+OCEANS_FP = "maggieseaweed/data/ocean_land_boundaries.parquet"
 
 
 def fetch_open_meteo_data(latitude, longitude, forecast_days):
@@ -219,11 +219,10 @@ def get_closest_beach(lat, lon, data_path=OCEANS_FP):
     closest_point_on_boundary = boundary.interpolate(boundary.project(input_point))
     return closest_point_on_boundary
 
-
 def get_closest_surf_spot(lat, lon):
     input_point = Point(lat, lon)
 
-    # surf_spots = pd.read_csv('/Users/mschultz3/Documents/projects/ml-for-production/maggieseaweed/maggieseaweed/data/surfspots.csv')
+    surf_spots = pd.read_csv('maggieseaweed/data/surfspots.csv')
     surf_spots = gpd.GeoDataFrame(
         surf_spots,
         geometry=gpd.points_from_xy(surf_spots.latitude, surf_spots.longitude),
