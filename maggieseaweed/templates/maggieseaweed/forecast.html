@@ -23,7 +23,7 @@
     <!-- <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.3/components/charts/chart-1/assets/css/chart-1.css">
     <!-- ApexCharts JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 
 
@@ -62,14 +62,15 @@
                                             <h4 class="display-4"><strong>{{ time }}</strong></h4>
                                             <h5 class="display-5"><strong>{{ date }}</strong></h5>
                                             <h6 class="text-muted">@ {{ location_name }}</h6>
-                                            <p class="text-muted"> {{ distance_to_input }} miles from {{ input_location_name }}</p>
+                                            <p class="text-muted"> {{ distance_to_input }} miles from {{
+                                                input_location_name }}</p>
                                             <h5 class="display-5"><strong>
                                                     🌡️ {{ air_temperature }}°F
                                                     💨 {{ wind_speed_10m }}mph {{ wind_direction_10m }}</strong></h5>
 
                                             <h5 class="display-5"><strong>
-                                                💧 {{ water_temperature }}°F
-                                                🌊 {{ wave_height }} ft
+                                                    💧 {{ water_temperature }}°F
+                                                    🌊 {{ wave_height }} ft
                                                 </strong></h5>
                                         </div>
 
@@ -118,18 +119,18 @@
                     </div>
                 </div>
 
-<!-- Chart 1 - Bootstrap Brain Component -->
-            <div class="card mb-4 gradient-custom" style="border-radius: 25px;">
-                <div class="card-body p-4">
-              <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
-                <div class="mb-3 mb-sm-0">
-                  <h5 class="card-title widget-card-title">Surfability Forecast</h5>
-                </div>
-              </div>
-              <div id="surfabilityChart" ></div>
+                <!-- Chart 1 - Bootstrap Brain Component -->
+                <div class="card mb-4 gradient-custom" style="border-radius: 25px;">
+                    <div class="card-body p-4">
+                        <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
+                            <div class="mb-3 mb-sm-0">
+                                <h5 class="card-title widget-card-title">Surfability Forecast</h5>
+                            </div>
+                        </div>
+                        <div id="surfabilityChart"></div>
 
-            </div>
-        </div>
+                    </div>
+                </div>
 
 
 
@@ -146,64 +147,65 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var chartData = {{ chart_data_json|safe }};
+        document.addEventListener("DOMContentLoaded", function () {
+            var chartData = {{ chart_data_json| safe
+        }};
 
-            var options = {
-                chart: {
-                    type: 'line',
-                    height: 350,
-                    zoom: {
-                        enabled: true,
-                        type: 'x',
-                        autoScaleYaxis: true
-                    },
+        var options = {
+            chart: {
+                type: 'line',
+                height: 350,
+                zoom: {
+                    enabled: true,
+                    type: 'x',
+                    autoScaleYaxis: true
                 },
-                series: [{
-                    name: 'Surfability Score',
-                    data: chartData
-                }],
-                xaxis: {
-                    type: 'datetime',
-                    labels: {
-                        rotate: -45,
-                        offsetY: 2,
-                        datetimeFormatter: {
-                            year: 'yyyy',
-                            month: 'MMM \'yy',
-                            day: 'dd MMM',
-                            hour: 'HH:mm'
-                        }
+            },
+            series: [{
+                name: 'Surfability Score',
+                data: chartData
+            }],
+            xaxis: {
+                type: 'datetime',
+                labels: {
+                    rotate: -45,
+                    offsetY: 2,
+                    datetimeFormatter: {
+                        year: 'yyyy',
+                        month: 'MMM \'yy',
+                        day: 'dd MMM',
+                        hour: 'HH:mm'
                     }
-                },
-                yaxis: {
-                    title: {
-                        text: 'Surfability Score'
-                    }
-                },
-                tooltip: {
-                    x: {
-                        format: 'dd MMM yyyy HH:mm'
-                    },
-                    y: {
-                        formatter: function (value) {
-                            return value.toFixed(2);
-                        }
-                    },
-                    // custom: function({ series, seriesIndex, dataPointIndex, w }) {
-                    //     var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-                    //     return '<div class="arrow_box">' +
-                    //         '<span> 💧 ' + data.water_temperature + '°F</span><br>' +
-                    //         '<span> 🌊 ' + data.wave_height + 'm</span><br>' +
-                    //         '<span> 🌡️ ' + data.air_temperature + '°F</span><br>' +
-                    //         '<span> 💨 ' + data.wind_speed_10m + 'mph '+ data.wind_direction_10m +'</span><br>' +
-                    //         '</div>';
-                    // }
                 }
-            };
+            },
+            yaxis: {
+                title: {
+                    text: 'Surfability Score'
+                }
+            },
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy HH:mm'
+                },
+                y: {
+                    formatter: function (value) {
+                        return value.toFixed(2);
+                    }
+                },
+                // custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                //     var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+                //     return '<div class="arrow_box">' +
+                //         '<span> 💧 ' + data.water_temperature + '°F</span><br>' +
+                //         '<span> 🌊 ' + data.wave_height + 'm</span><br>' +
+                //         '<span> 🌡️ ' + data.air_temperature + '°F</span><br>' +
+                //         '<span> 💨 ' + data.wind_speed_10m + 'mph '+ data.wind_direction_10m +'</span><br>' +
+                //         '</div>';
+                // }
+            }
+        };
 
-            var chart = new ApexCharts(document.querySelector("#surfabilityChart"), options);
-            chart.render();
+        var chart = new ApexCharts(document.querySelector("#surfabilityChart"), options);
+        chart.render();
         });
     </script>
 
@@ -219,36 +221,37 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
         $(document).ready(function () {
-            var latitude = {{ latitude }};
-            var longitude = {{ longitude }};
-            var location_name = "{{ location_name }}";
-            var wave_direction = "{{ wave_direction }}";
-            var wave_type = "{{ wave_type }}";
-            var crowd_level = "{{ crowd_level }}";
-            var distance_to_input = "{{ distance_to_input }}";
-            var input_location_name = "{{ input_location_name }}";
+            var latitude = {{ latitude }
+        };
+        var longitude = {{ longitude }};
+        var location_name = "{{ location_name }}";
+        var wave_direction = "{{ wave_direction }}";
+        var wave_type = "{{ wave_type }}";
+        var crowd_level = "{{ crowd_level }}";
+        var distance_to_input = "{{ distance_to_input }}";
+        var input_location_name = "{{ input_location_name }}";
 
-            var map = L.map('map').setView([latitude, longitude], 13);
+        var map = L.map('map').setView([latitude, longitude], 13);
 
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>'
-            }).addTo(map);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+        }).addTo(map);
 
-            // Add legend
-            var legend = L.control({ position: 'topright' });
+        // Add legend
+        var legend = L.control({ position: 'topright' });
 
-            legend.onAdd = function (map) {
-                var div = L.DomUtil.create('div', 'legend');
-                div.innerHTML += '<h3>' + location_name + '</h3>';
-                div.innerHTML += '<p>'+wave_type + ' '+ wave_direction + ' '+crowd_level +'</p>';
-                return div;
-            };
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'legend');
+            div.innerHTML += '<h3>' + location_name + '</h3>';
+            div.innerHTML += '<p>' + wave_type + ' | ' + wave_direction + ' | ' + crowd_level + '</p>';
+            return div;
+        };
 
-            legend.addTo(map);
+        legend.addTo(map);
 
 
-            L.marker([latitude, longitude]).addTo(map)
-                .bindPopup(distance_to_input + ' from ' + input_location_name).openPopup();
+        L.marker([latitude, longitude]).addTo(map)
+            .bindPopup(distance_to_input + ' from ' + input_location_name).openPopup();
         });
     </script>
 
