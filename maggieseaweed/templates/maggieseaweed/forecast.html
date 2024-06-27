@@ -265,7 +265,6 @@
                 attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>'
             }).addTo(map);
 
-
             // Add legend
             var legend = L.control({ position: 'topright' });
 
@@ -286,7 +285,7 @@
             L.marker([latitude, longitude]).addTo(map)
                 .bindPopup(distance_to_input + ' from ' + input_location_name,
                 {offset: L.point(0, -20)}).openPopup();
-
+        });
     </script>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
