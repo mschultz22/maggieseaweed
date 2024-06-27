@@ -24,6 +24,34 @@
     <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.3/components/charts/chart-1/assets/css/chart-1.css">
     <!-- ApexCharts JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+    .legend {
+        padding: 6px 8px;
+        font: 14px Arial, sans-serif;
+        background: white;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+    }
+    .legend-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .legend-body p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    .legend-body .icon {
+        margin-right: 5px;
+        color: #2aabd2;
+    }
+</style>
 
 
 
@@ -239,10 +267,12 @@
 
             legend.onAdd = function (map) {
                 var div = L.DomUtil.create('div', 'legend');
-                div.innerHTML += '<h3>' + location_name + '</h3>';
-                div.innerHTML += '<p>'+wave_type + '</p>';
-                div.innerHTML += '<p>'+ wave_direction +'</p>';
-                div.innerHTML += '<p>'+crowd_level +'</p>';
+                div.innerHTML += '<div class="legend-title">' + location_name + '</div>';
+            div.innerHTML += '<div class="legend-body">';
+            div.innerHTML += '<p><i class="fas fa-water icon"></i>' + wave_type + '</p>';
+            div.innerHTML += '<p><i class="fas fa-arrow-up icon" style="transform: rotate(45deg);"></i>' + wave_direction + '</p>';
+            div.innerHTML += '<p><i class="fas fa-users icon"></i>' + crowd_level + '</p>';
+            div.innerHTML += '</div>';
                 return div;
             };
 
