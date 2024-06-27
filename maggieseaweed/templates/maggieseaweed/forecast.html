@@ -220,15 +220,15 @@
                             return value.toFixed(2);
                         }
                     },
-                    // custom: function({ series, seriesIndex, dataPointIndex, w }) {
-                    //     var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-                    //     return '<div class="arrow_box">' +
-                    //         '<span> 💧 ' + data.water_temperature + '°F</span><br>' +
-                    //         '<span> 🌊 ' + data.wave_height + 'm</span><br>' +
-                    //         '<span> 🌡️ ' + data.air_temperature + '°F</span><br>' +
-                    //         '<span> 💨 ' + data.wind_speed_10m + 'mph '+ data.wind_direction_10m +'</span><br>' +
-                    //         '</div>';
-                    // }
+                    custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                        var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+                        return '<div class="arrow_box">' +
+                            '<span> 💧 ' + data.water_temperature + '°F</span><br>' +
+                            '<span> 🌊 ' + data.wave_height + 'm</span><br>' +
+                            '<span> 🌡️ ' + data.air_temperature + '°F</span><br>' +
+                            '<span> 💨 ' + data.wind_speed_10m + 'mph '+ data.wind_direction_10m +'</span><br>' +
+                            '</div>';
+                    }
                 }
             };
 
@@ -283,7 +283,7 @@
 
 
             L.marker([latitude, longitude]).addTo(map)
-                .bindPopup(distance_to_input + ' from ' + input_location_name).openPopup();
+                .bindPopup(distance_to_input + ' miles from ' + input_location_name).openPopup();
         });
     </script>
     </div>
