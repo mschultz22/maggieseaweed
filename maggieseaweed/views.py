@@ -56,8 +56,8 @@ def display_forecast(request, place_name, latitude, longitude, forecast_days):
     data = calculate_surfability_scores(data)
 
     best_time_to_surf = data.loc[data['surfability_score'].idxmax()]
-    # response_data = prepare_response_data(best_time_to_surf, data, place_name, surf_spot_data)
-    response_data = load_response_data_from_json('response_data.json')
+    response_data = prepare_response_data(best_time_to_surf, data, place_name, surf_spot_data)
+    # response_data = load_response_data_from_json('response_data.json')
 
     #save_response_data_to_json(response_data, 'response_data.json')
 

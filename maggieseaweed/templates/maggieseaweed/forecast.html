@@ -283,8 +283,7 @@
 
 
             L.marker([latitude, longitude]).addTo(map)
-                .bindPopup(distance_to_input + ' from ' + input_location_name,
-                {offset: L.point(0, -20)}).openPopup();
+                .bindPopup(distance_to_input + ' from ' + input_location_name).openPopup();
         });
     </script>
     </div>
