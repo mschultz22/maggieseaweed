@@ -57,6 +57,8 @@
 
     <!-- Title -->
     <title>maggieseaweed</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
 </head>
 
@@ -245,6 +247,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <div id="map">
     <script>
         $(document).ready(function () {
             var latitude = {{ latitude }};
@@ -283,7 +286,7 @@
                 .bindPopup(distance_to_input + ' from ' + input_location_name).openPopup();
         });
     </script>
-
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://unpkg.com/bs-brain@2.0.3/components/charts/chart-1/assets/controller/chart-1.js"></script>
 </body>
