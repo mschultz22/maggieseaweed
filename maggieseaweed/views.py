@@ -56,10 +56,10 @@ def display_forecast(request, place_name, latitude, longitude, forecast_days):
     data = calculate_surfability_scores(data)
 
     best_time_to_surf = data.loc[data['surfability_score'].idxmax()]
-    response_data = prepare_response_data(best_time_to_surf, data, place_name, surf_spot_data)
-    # response_data = load_response_data_from_json('response_data.json')
+    # response_data = prepare_response_data(best_time_to_surf, data, place_name, surf_spot_data, forecast_days)
+    response_data = load_response_data_from_json('response_data.json')
 
-    #save_response_data_to_json(response_data, 'response_data.json')
+    # save_response_data_to_json(response_data, 'response_data.json')
 
 
 
@@ -103,10 +103,11 @@ def prepare_chart_data(data):
                 })
     return chart_data
 
-def prepare_response_data(best_time_to_surf, data, input_name, beach_data):
+def prepare_response_data(best_time_to_surf, data, input_name, beach_data, forecast_days):
     timestamp = best_time_to_surf['timestamp']
     return {
         "timestamp": timestamp.strftime("%B %d, %Y %I:%M %p"),
+        "forecast_days": forecast_days,
         "date": timestamp.strftime("%B %d, %Y"),
         "time": format_time(timestamp),
         "water_temperature": round(best_time_to_surf.get("waterTemperature")),

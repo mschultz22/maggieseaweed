@@ -122,43 +122,19 @@
 
 <body>
 
-    <div class="container-fluid text-center py-5">
-        <style>
-            .logo {
-                text-align: center;
-                font-family: Arial, sans-serif;
-                margin-top: 50px;
-                line-height: 0.9; /* Adjust this value to control the space between lines */
-            }
-            .logo .m {
-                font-size: 110px;
-            }
-            .logo .s {
-                font-size: 115px;
-                display: inline-block;
-                transform: rotate(90deg);
-            }
-            .logo .w {
-                font-size: 110px;
-            }
-            .logo .line {
-                font-size: 60px;
-                display: block;
-            }
-        </style>
+    <div class="container-fluid text-center pb-5">
         <div class="logo">
-            <span class="m">m </span>
-            <span class="s"> s</span>
-            <span class="w">w</span>
-            <span class="line">maggieseaweed</span>
+            <a href="/">
+                <img src="/static/maggieseaweed/transparent_black_logo.png" alt="Maggie Seaweed Logo" style="max-width: 100%; height: auto;">
+            </a>
         </div>
-
+        <h3>welcome to my surf app!</h3>
     </div>
-    <div class="container-fluid text-center py-5"><h1>welcome to my surf app!</h1></div>
+
 
 
     <section class="vh-100">
-        <div class="container py-5">
+        <div class="container py-1">
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <form id="fetchWeatherDataForm">
@@ -181,21 +157,20 @@
                             </select>
                         </div>
                         <div class="form-group">
-
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="morningCheckbox" value="morning">
-                                <label class="form-check-label" for="morningCheckbox">Morning</label>
+                            <div class="d-flex justify-content-center">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="morningCheckbox" value="morning">
+                                    <label class="form-check-label" for="morningCheckbox">Morning</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="afternoonCheckbox" value="afternoon">
+                                    <label class="form-check-label" for="afternoonCheckbox">Afternoon</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="nightCheckbox" value="night">
+                                    <label class="form-check-label" for="nightCheckbox">Night</label>
+                                </div>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="afternoonCheckbox"
-                                    value="afternoon">
-                                <label class="form-check-label" for="afternoonCheckbox">Afternoon</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="nightCheckbox" value="night">
-                                <label class="form-check-label" for="nightCheckbox">Night</label>
-                            </div>
-
                         </div>
                         <div class="text-center"> <!-- Centered submit button -->
                             <button type="submit" class="btn btn-primary" value="Go">Submit</button>
