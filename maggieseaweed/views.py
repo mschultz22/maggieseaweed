@@ -31,15 +31,16 @@ def home(request):
 def testing(request):
     return render(request, "maggieseaweed/search_bar.html")
 
-def display_forecast(request, place_name, latitude, longitude, forecast_days):
+def display_forecast(request, place_name, latitude, longitude, forecast_days, preferred_time):
     try:
         latitude = float(latitude)
         longitude = float(longitude)
         forecast_days = int(forecast_days)
+
     except ValueError:
         return HttpResponse("Invalid latitude, longitude, or forecast days", status=400)
 
-    preferred_time = request.POST.get("preferredTime", "anytime")
+    preferred_times = preferred_time.split(',') if preferred_time != 'anytime' else ['anytime']
 
 
     try:
@@ -52,12 +53,12 @@ def display_forecast(request, place_name, latitude, longitude, forecast_days):
         return HttpResponse(f"Error fetching data: {e}", status=500)
 
     raw_data['timestamp'] = pd.to_datetime(raw_data['timestamp'])
-    data = filter_data_by_time(raw_data, preferred_time)
+    data = filter_data_by_time(raw_data, preferred_times)
     data = calculate_surfability_scores(data)
 
     best_time_to_surf = data.loc[data['surfability_score'].idxmax()]
-    # response_data = prepare_response_data(best_time_to_surf, data, place_name, surf_spot_data, forecast_days)
-    response_data = load_response_data_from_json('response_data.json')
+    response_data = prepare_response_data(best_time_to_surf, data, place_name, surf_spot_data, forecast_days)
+    # response_data = load_response_data_from_json('response_data.json')
 
     # save_response_data_to_json(response_data, 'response_data.json')
 
@@ -65,14 +66,26 @@ def display_forecast(request, place_name, latitude, longitude, forecast_days):
 
     return render(request, "maggieseaweed/forecast.html", response_data)
 
-def filter_data_by_time(data, preferred_time):
-    if preferred_time == "morning":
-        return data[data['timestamp'].dt.hour < 10]
-    elif preferred_time == "afternoon":
-        return data[(data['timestamp'].dt.hour >= 10) & (data['timestamp'].dt.hour < 17)]
-    elif preferred_time == "evening":
-        return data[data['timestamp'].dt.hour >= 17]
-    return data
+def filter_data_by_time(data, preferred_times):
+    # Convert to a list if preferred_times is a single string
+    if isinstance(preferred_times, str):
+        preferred_times = [preferred_times]
+
+    if 'anytime' in preferred_times or not preferred_times:
+        return data
+
+    # Creating conditions based on the preferred times
+    conditions = pd.Series(False, index=data.index)
+
+    if 'morning' in preferred_times:
+        conditions |= data['timestamp'].dt.hour < 10  # Morning is before 10 AM
+    if 'afternoon' in preferred_times:
+        conditions |= (data['timestamp'].dt.hour >= 10) & (data['timestamp'].dt.hour < 17)  # Afternoon is 10 AM to 5 PM
+    if 'night' in preferred_times:
+        conditions |= data['timestamp'].dt.hour >= 17  # Night is from 5 PM onwards
+
+    return data[conditions]
+
 
 def calculate_surfability_scores(data):
     data['surfability_score'] = data.apply(surfability_score, axis=1)

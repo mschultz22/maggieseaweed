@@ -14,9 +14,10 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("testing", views.testing, name="testing"),
     path("results", views.display_forecast, name="forecast"),
-    path(
-        "results/<str:place_name>/<str:latitude>/<str:longitude>/<int:forecast_days>/",
-        views.display_forecast,
-        name="forecast",
-    ),
+    # path(
+    #     "results/<str:place_name>/<str:latitude>/<str:longitude>/<int:forecast_days>/",
+    #     views.display_forecast,
+    #     name="forecast",
+    # ),
+    path('results/<str:place_name>/<str:latitude>/<str:longitude>/<int:forecast_days>/<str:preferred_time>/', views.display_forecast, name='forecast'),
 ]

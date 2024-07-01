@@ -85,6 +85,17 @@
 
                 var place = $('#place').val();
                 var forecastDays = $('#forecastDays').val();
+                var preferredTimes = [];
+
+                // Check which checkboxes are checked
+                ['morning', 'afternoon', 'night'].forEach(function(time) {
+                    if ($('#' + time + 'Checkbox').is(':checked')) {
+                        preferredTimes.push(time);
+                    }
+                });
+                // Default to 'anytime' if no checkboxes are selected
+                var preferredTime = preferredTimes.length > 0 ? preferredTimes.join(', ') : 'anytime';
+
 
                 // Make a request to Mapbox Geocoding API
                 $.ajax({
@@ -102,7 +113,8 @@
                         var longitude = result.center[0];
                         var place_name = result.place_name;
 
-                        window.location.href = "/results/" + place_name + "/" + latitude + "/" + longitude + "/" + forecastDays + "/";
+
+                        window.location.href = "/results/" + place_name + "/" + latitude + "/" + longitude + "/" + forecastDays + "/" + encodeURIComponent(preferredTime);
 
                     },
                     error: function (error) {
